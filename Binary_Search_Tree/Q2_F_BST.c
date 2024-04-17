@@ -11,21 +11,23 @@ Purpose: Implementing the required functions for Question 2 */
 
 //////////////////////////////////////////////////////////////////////////////////
 
-typedef struct _bstnode{
+typedef struct _bstnode
+{
 	int item;
 	struct _bstnode *left;
 	struct _bstnode *right;
-} BSTNode;   // You should not change the definition of BSTNode
+} BSTNode; // You should not change the definition of BSTNode
 
-typedef struct _stackNode{
+typedef struct _stackNode
+{
 	BSTNode *data;
 	struct _stackNode *next;
-}StackNode; // You should not change the definition of StackNode
+} StackNode; // You should not change the definition of StackNode
 
 typedef struct _stack
 {
 	StackNode *top;
-}Stack; // You should not change the definition of Stack
+} Stack; // You should not change the definition of Stack
 
 ///////////////////////// function prototypes ////////////////////////////////////
 
@@ -47,14 +49,13 @@ int main()
 	int c, i;
 	c = 1;
 
-	//Initialize the Binary Search Tree as an empty Binary Search Tree
+	// Initialize the Binary Search Tree as an empty Binary Search Tree
 	BSTNode *root;
 	root = NULL;
 
 	printf("1: Insert an integer into the binary search tree;\n");
 	printf("2: Print the in-order traversal of the binary search tree;\n");
 	printf("0: Quit;\n");
-
 
 	while (c != 0)
 	{
@@ -80,7 +81,6 @@ int main()
 			printf("Choice unknown;\n");
 			break;
 		}
-
 	}
 
 	return 0;
@@ -90,17 +90,88 @@ int main()
 
 void inOrderTraversal(BSTNode *root)
 {
-	 /* add your code here */
+	// 스택을 할당하고 초기화
+	Stack *s = malloc(sizeof(Stack));
+	if (root == NULL)
+	{
+		// 루트가 NULL인 경우 처리하지 않고 함수 종료
+		return;
+	}
+
+	// 왼쪽 자식 노드를 스택에 모두 추가
+	while (root != NULL)
+	{
+		push(s, root);
+		root = root->left;
+	}
+
+	// 스택이 비어있을 때까지 반복
+	while (isEmpty(s) != 1)
+	{
+		// 스택에서 노드를 꺼내어 출력하고 오른쪽 자식으로 이동
+		root = pop(s);
+		printf("%d ", root->item);
+		if (root->right != NULL)
+		{
+			// 오른쪽 자식이 있는 경우 해당 자식을 스택에 추가하고, 왼쪽 자식으로 이동하여 모든 왼쪽 자식을 스택에 추가
+			root = root->right;
+			push(s, root);
+			if (root->right != NULL)
+			{
+				root = root->left;
+				push(s, root);
+			}
+		}
+		else
+		{
+			// 오른쪽 자식이 없는 경우 스택 처리를 계속 진행
+			continue;
+		}
+	}
+
+	// 메모리 해제
+	free(s);
 }
+
+// void inOrderTraversal(BSTNode *root)
+// {
+// 	if (root == NULL)
+// 		return;
+
+// 	Stack *s = malloc(sizeof(Stack));
+
+// 	while (1)
+// 	{
+// 		// 현재 노드의 왼쪽 자식들을 스택에 모두 추가
+// 		while (root != NULL)
+// 		{
+// 			push(s, root);
+// 			root = root->left;
+// 		}
+
+// 		// 스택이 비어있으면 종료
+// 		if (isEmpty(s))
+// 			break;
+
+// 		// 스택에서 노드를 꺼내서 출력하고 오른쪽 자식을 처리
+// 		root = pop(s);
+// 		printf("%d ", root->item);
+// 		root = root->right;
+// 	}
+
+// 	free(s);
+// }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void insertBSTNode(BSTNode **node, int value){
+void insertBSTNode(BSTNode **node, int value)
+{
 	if (*node == NULL)
 	{
 		*node = malloc(sizeof(BSTNode));
 
-		if (*node != NULL) {
+		if (*node != NULL)
+		{
 			(*node)->item = value;
 			(*node)->left = NULL;
 			(*node)->right = NULL;
@@ -112,7 +183,7 @@ void insertBSTNode(BSTNode **node, int value){
 		{
 			insertBSTNode(&((*node)->left), value);
 		}
-		else if (value >(*node)->item)
+		else if (value > (*node)->item)
 		{
 			insertBSTNode(&((*node)->right), value);
 		}
@@ -123,7 +194,7 @@ void insertBSTNode(BSTNode **node, int value){
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void push(Stack *stack, BSTNode * node)
+void push(Stack *stack, BSTNode *node)
 {
 	StackNode *temp;
 
@@ -145,10 +216,10 @@ void push(Stack *stack, BSTNode * node)
 	}
 }
 
-BSTNode * pop(Stack * s)
+BSTNode *pop(Stack *s)
 {
 	StackNode *temp, *t;
-	BSTNode * ptr;
+	BSTNode *ptr;
 	ptr = NULL;
 
 	t = s->top;
@@ -165,7 +236,7 @@ BSTNode * pop(Stack * s)
 	return ptr;
 }
 
-BSTNode * peek(Stack * s)
+BSTNode *peek(Stack *s)
 {
 	StackNode *temp;
 	temp = s->top;
@@ -182,7 +253,6 @@ int isEmpty(Stack *s)
 	else
 		return 0;
 }
-
 
 void removeAll(BSTNode **node)
 {

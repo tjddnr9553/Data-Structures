@@ -100,78 +100,78 @@ int main()
 
 ////////////////////////////////////////////////////////////
 
-// int balanced(char *expression)
-// {
-// 	Stack *s = malloc(sizeof(Stack));
-// 	char temp;
-// 	for (int i = 0; expression[i] != '\0'; i++)
-// 	{
-// 		if (expression[i] == '(' || expression[i] == '{' || expression[i] == '[')
-// 		{
-// 			push(s, expression[i]);
-// 		}
-// 		else if (expression[i] == ')' || expression[i] == '}' || expression[i] == ']')
-// 		{
-// 			temp = pop(s);
-// 			if (temp == '(' && expression[i] == ')')
-// 			{
-// 				continue;
-// 			}
-// 			else if (temp == '{' && expression[i] == '}')
-// 			{
-// 				continue;
-// 			}
-// 			else if (temp == '[' && expression[i] == ']')
-// 			{
-// 				continue;
-// 			}
-// 		}
-// 	}
-// 	if (isEmptyStack(s) == 1)
-// 	{
-// 		return 0;
-// 	}
-// 	else
-// 	{
-// 		return 1;
-// 	}
-// }
-
 int balanced(char *expression)
 {
 	Stack *s = malloc(sizeof(Stack));
-	while (*expression != '\0')
+	char temp;
+	for (int i = 0; expression[i] != '\0'; i++)
 	{
-		if (*expression == '(' || *expression == '[' || *expression == '{')
+		if (expression[i] == '(' || expression[i] == '{' || expression[i] == '[')
 		{
-			push(s, *expression);
-			expression++;
+			push(s, expression[i]);
 		}
-		else if (*expression == ')' || *expression == ']' || *expression == '}')
+		else if (expression[i] == ')' || expression[i] == '}' || expression[i] == ']')
 		{
-			if (*expression == ']' && peek(s) == '[')
+			temp = pop(s);
+			if (temp == '(' && expression[i] == ')')
 			{
-				pop(s);
-				expression++;
+				continue;
 			}
-			else if (*expression == ')' && peek(s) == '(')
+			else if (temp == '{' && expression[i] == '}')
 			{
-				pop(s);
-				expression++;
+				continue;
 			}
-			else if (*expression == '}' && peek(s) == '{')
+			else if (temp == '[' && expression[i] == ']')
 			{
-				pop(s);
-				expression++;
+				continue;
 			}
-		}
-		if (isEmptyStack(s) != 1)
-		{
-			return 1;
 		}
 	}
-	return 0;
+	if (isEmptyStack(s) == 1)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }
+
+// int balanced(char *expression)
+// {
+// 	Stack *s = malloc(sizeof(Stack));
+// 	while (*expression != '\0')
+// 	{
+// 		if (*expression == '(' || *expression == '[' || *expression == '{')
+// 		{
+// 			push(s, *expression);
+// 			expression++;
+// 		}
+// 		else if (*expression == ')' || *expression == ']' || *expression == '}')
+// 		{
+// 			if (*expression == ']' && peek(s) == '[')
+// 			{
+// 				pop(s);
+// 				expression++;
+// 			}
+// 			else if (*expression == ')' && peek(s) == '(')
+// 			{
+// 				pop(s);
+// 				expression++;
+// 			}
+// 			else if (*expression == '}' && peek(s) == '{')
+// 			{
+// 				pop(s);
+// 				expression++;
+// 			}
+// 		}
+// 		if (isEmptyStack(s) != 1)
+// 		{
+// 			return 1;
+// 		}
+// 	}
+// 	return 0;
+// }
 ////////////////////////////////////////////////////////////
 
 void removeAllItemsFromStack(Stack *s)
